@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.browser_request.py
+.browser_publish.py
+explore.py
+device_commands.csv
+results.json
