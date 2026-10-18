@@ -32,7 +32,7 @@ class FakeGateway:
 
 
 def command(safe_to_retry=True):
-    return Command("c1", "d1", "2026-09-01T08:30:00+08:00",
+    return Command("c1", "d1", "turn_on", "on", "2026-09-01T08:30:00+08:00",
                    "2026-09-01T08:00:00+08:00", "2026-09-01T09:00:00+08:00",
                    safe_to_retry)
 
@@ -62,6 +62,12 @@ class InterventionTests(unittest.TestCase):
         service = InterventionService(gateway)
         self.assertEqual(service.submit(command()), "completed")
         self.assertEqual(gateway.sent, ["c1", "c1"])
+
+    def test_unsafe_command_is_not_retried(self):
+        gateway = FakeGateway(probes=[True], sends=[False], states=[False])
+        service = InterventionService(gateway)
+        self.assertEqual(service.submit(command(safe_to_retry=False)), "unconfirmed")
+        self.assertEqual(gateway.sent, ["c1"])
 
     def test_queued_command_expires_without_send(self):
         gateway = FakeGateway(probes=[False])
