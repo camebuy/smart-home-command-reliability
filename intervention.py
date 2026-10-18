@@ -15,6 +15,8 @@ from policy import should_probe
 class Command:
     command_id: str
     device_id: str
+    action: str
+    target_state: str
     dispatched_at: str
     last_heartbeat_at: str
     expires_at: str
